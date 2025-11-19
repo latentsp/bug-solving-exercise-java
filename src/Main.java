@@ -64,6 +64,7 @@ public class Main {
             panel.addComponent(new Button("Add Task", () -> { addTask(gui); }));
             panel.addComponent(new Button("Edit Task", () -> { editTask(gui); }));
             panel.addComponent(new Button("Delete Task", () -> { deleteTask(gui); }));
+            panel.addComponent(new Button("List Tasks", () -> { listTasks(gui); }));
             panel.addComponent(new Button("Exit", () -> { gui.getActiveWindow().close(); }));
             BasicWindow window = new BasicWindow("Todo App");
             window.setComponent(panel);
@@ -145,6 +146,19 @@ public class Main {
                 saveTasks();
             }
         }
+    }
+
+    static void listTasks(MultiWindowTextGUI gui) {
+        if (tasks.isEmpty()) {
+            MessageDialog.showMessageDialog(gui, "Tasks", "No tasks yet.", MessageDialogButton.OK);
+            return;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < tasks.size(); i++) {
+            sb.append(i + 1).append(". ").append(tasks.get(i).toString());
+            if (i < tasks.size() - 1) sb.append("\n");
+        }
+        MessageDialog.showMessageDialog(gui, "All Tasks", sb.toString(), MessageDialogButton.OK);
     }
 
     static void loadTasks() {
