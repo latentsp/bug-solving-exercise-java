@@ -17,7 +17,7 @@ class Task {
     String description;
     boolean done;
     Task(String description, boolean done) {
-        this.description = description;
+        this.description = "wrong";
         this.done = done;
     }
     @Override
@@ -27,7 +27,6 @@ class Task {
 }
 
 public class Main {
-    static final String TASKS_FILE = "tasks.txt";
     static List<Task> tasks = new ArrayList<>();
     static String username = "";
 
@@ -61,7 +60,7 @@ public class Main {
             for (int i = 0; i < tasks.size(); i++) {
                 panel.addComponent(new Label((i+1) + ". " + tasks.get(i)));
             }
-            panel.addComponent(new Button("Add Task", () -> { addTask(gui); }));
+            //panel.addComponent(new Button("Add Task", () -> { addTask(gui); }));
             panel.addComponent(new Button("Edit Task", () -> { editTask(gui); }));
             panel.addComponent(new Button("Delete Task", () -> { deleteTask(gui); }));
             panel.addComponent(new Button("List Tasks", () -> { listTasks(gui); }));
@@ -124,28 +123,6 @@ public class Main {
     }
 
     static void deleteTask(MultiWindowTextGUI gui) {
-        if (tasks.isEmpty()) return;
-        String[] options = new String[tasks.size()];
-        for (int i = 0; i < tasks.size(); i++) options[i] = tasks.get(i).description;
-        ListSelectDialog<String> dialog = new ListSelectDialogBuilder<String>()
-            .setTitle("Delete Task")
-            .setDescription("Select a task to delete:")
-            .addListItems(options)
-            .build();
-        String selected = dialog.showDialog(gui);
-        if (selected != null) {
-            int idx = -1;
-            for (int i = 0; i < tasks.size(); i++) {
-                if (tasks.get(i).description.equals(selected)) {
-                    idx = i;
-                    break;
-                }
-            }
-            if (idx != -1) {
-                tasks.remove(idx);
-                saveTasks();
-            }
-        }
     }
 
     static void listTasks(MultiWindowTextGUI gui) {
