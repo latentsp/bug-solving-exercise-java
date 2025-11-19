@@ -55,19 +55,36 @@ public class Main {
 
     static void showMenu(MultiWindowTextGUI gui) {
         while (true) {
-            Panel panel = new Panel();
-            panel.addComponent(new Label("Hello, " + username + "!"));
-            panel.addComponent(new Label("Tasks:"));
-            for (int i = 0; i < tasks.size(); i++) {
-                panel.addComponent(new Label((i+1) + ". " + tasks.get(i)));
-            }
+            // Use a vertical LinearLayout so we can center the greeting and buttons
+            Panel panel = new Panel(new LinearLayout(Direction.VERTICAL));
+
+            // Centered greeting at the top of the content area
+            Label greetingLabel = new Label("Hello, " + username + "!");
+            greetingLabel.setLayoutData(LinearLayout.createLayoutData(LinearLayout.Alignment.Center));
+            panel.addComponent(greetingLabel);
+
+            // NOTE: Do not show the task list directly on the main menu.
+            // The tasks are accessible via the "List Tasks" option instead.
+
+            panel.addComponent(new EmptySpace());
+
             panel.addComponent(new Button("Add Task", () -> { addTask(gui); }));
             panel.addComponent(new Button("Edit Task", () -> { editTask(gui); }));
             panel.addComponent(new Button("Delete Task", () -> { deleteTask(gui); }));
             panel.addComponent(new Button("List Tasks", () -> { listTasks(gui); }));
-            panel.addComponent(new Button("Exit", () -> { gui.getActiveWindow().close(); }));
-            BasicWindow window = new BasicWindow("Todo App");
+
+            // Exit should terminate the whole program
+            panel.addComponent(new Button("Exit", () -> {
+                gui.getActiveWindow().close();
+                System.exit(0);
+            }));
+
+            // Window title bar shows the single TODO title
+            BasicWindow window = new BasicWindow("TODO");
             window.setComponent(panel);
+            // Center the window in the terminal
+            window.setHints(Collections.singletonList(Window.Hint.CENTERED));
+
             gui.addWindowAndWait(window);
             if (!window.isVisible()) break;
         }
