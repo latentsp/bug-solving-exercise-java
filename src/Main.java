@@ -13,6 +13,7 @@ public class Main {
             terminal.close();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
+
         }
     }
 }
